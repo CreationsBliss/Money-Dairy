@@ -1,8 +1,23 @@
-# React + Vite
+# Money Dairy
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Money Dairy is a user-friendly financial tracking application designed to simplify the management of personal finances. With an intuitive interface, users can easily switch between tracking expenses and recording income, enabling them to monitor their financial activities and calculate their balance effortlessly. This project is built with modern technologies to ensure a seamless and interactive experience.
 
-Currently, two official plugins are available:
+## Features:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- __Expense Tracking__: Add and categorize your expenses to understand where your money is going.
+- __Income Recording__: Record your income sources and amounts with ease.
+- __Balance Calculation__: Automatically calculate your current balance based on the difference between income and expenses.
+- __Intuitive Tabs__: Switch between "Expense" and "Income" tabs with a simple click.
+- __Real-Time Notifications__: Get instant feedback and alerts using React Toast.
+- __Iconic Interface__: Enjoy a visually appealing design with the use of React Icons.
+- __Responsive Design__: Built with Tailwind CSS for optimal performance across devices.
+
+## Technologies Used:
+
+- React
+- Tailwind CSS
+- Meraki UI
+- React Hot Toast
+- React Icons
+
+
