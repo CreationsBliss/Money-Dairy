@@ -1,3 +1,4 @@
+import moment from "moment";
 import { BiSortAlt2 } from "react-icons/bi";
 import { FaMoneyBillAlt } from "react-icons/fa";
 import {
@@ -6,9 +7,9 @@ import {
   MdOutlineSettingsInputComponent,
 } from "react-icons/md";
 
-const TrackExpense = () => {
+const TrackExpense = ({ expenses }) => {
   return (
-    <div className="w-full md:w-1/2 border rounded-md dark:border-gray-600">
+    <div>
       <div className="flex justify-between items-center bg-gray-800 p-4 rounded-md">
         <div className="flex space-x-2">
           <div className="bg-red-500 p-2 flex justify-center items-center rounded-md">
@@ -29,77 +30,36 @@ const TrackExpense = () => {
       </div>
 
       <div className="py-4">
-        <div className="flex justify-between items-center mx-4 pb-2 pt-2 border-b last:border-b-0 dark:border-gray-600 group">
-          <div>
-            <h1 className="text-lg font-semibold text-gray-800 dark:text-white lg:text-xl">
-              Food
-            </h1>
-            <p className="text-[12px]">15 January 2024</p>
+        {expenses.map((expense) => (
+          <div
+            key={expense.id}
+            className="flex justify-between items-center mx-4 pb-2 pt-2 border-b last:border-b-0 dark:border-gray-600 group"
+          >
+            <div>
+              <h1 className="text-lg font-semibold text-gray-800 dark:text-white lg:text-xl">
+                {expense.category}
+              </h1>
+              <p className="text-[12px]">
+                {moment(expense.date).format("D MMMM YYYY")}
+              </p>
+            </div>
+            <div className="flex items-center">
+              <span className="text-lg font-semibold text-gray-800 dark:text-white lg:text-xl translate-x-10 transition-all group-hover:-translate-x-3">
+                {expense.amount}
+              </span>
+              <span className="space-x-1 flex translate-x-5 group-hover:translate-x-0 opacity-0 group-hover:opacity-100 transition-all">
+                <MdModeEdit
+                  className="cursor-pointer hover:text-blue-500 transition-colors duration-300"
+                  size={18}
+                />
+                <MdDelete
+                  className="cursor-pointer hover:text-red-500 transition-colors duration-300"
+                  size={18}
+                />
+              </span>
+            </div>
           </div>
-          <div className="flex items-center">
-            <span className="text-lg font-semibold text-gray-800 dark:text-white lg:text-xl translate-x-10 transition-all group-hover:-translate-x-3">
-              BDT 1000
-            </span>
-            <span className="space-x-1 flex translate-x-5 group-hover:translate-x-0 opacity-0 group-hover:opacity-100 transition-all">
-              <MdModeEdit
-                className="cursor-pointer hover:text-blue-500 transition-colors duration-300"
-                size={18}
-              />
-              <MdDelete
-                className="cursor-pointer hover:text-red-500 transition-colors duration-300"
-                size={18}
-              />
-            </span>
-          </div>
-        </div>
-
-        <div className="flex justify-between items-center mx-4 pb-2 pt-2 border-b last:border-b-0 dark:border-gray-600 group">
-          <div>
-            <h1 className="text-lg font-semibold text-gray-800 dark:text-white lg:text-xl">
-              Education
-            </h1>
-            <p className="text-[12px]">15 January 2024</p>
-          </div>
-          <div className="flex items-center">
-            <span className="text-lg font-semibold text-gray-800 dark:text-white lg:text-xl translate-x-10 transition-all group-hover:-translate-x-3">
-              BDT 1000
-            </span>
-            <span className="space-x-1 flex translate-x-5 group-hover:translate-x-0 opacity-0 group-hover:opacity-100 transition-all">
-              <MdModeEdit
-                className="cursor-pointer hover:text-blue-500 transition-colors duration-300"
-                size={18}
-              />
-              <MdDelete
-                className="cursor-pointer hover:text-red-500 transition-colors duration-300"
-                size={18}
-              />
-            </span>
-          </div>
-        </div>
-
-        <div className="flex justify-between items-center mx-4 pb-2 pt-2 border-b last:border-b-0 dark:border-gray-600 group">
-          <div>
-            <h1 className="text-lg font-semibold text-gray-800 dark:text-white lg:text-xl">
-              Health
-            </h1>
-            <p className="text-[12px]">15 January 2024</p>
-          </div>
-          <div className="flex items-center">
-            <span className="text-lg font-semibold text-gray-800 dark:text-white lg:text-xl translate-x-10 transition-all group-hover:-translate-x-3">
-              BDT 1000
-            </span>
-            <span className="space-x-1 flex translate-x-5 group-hover:translate-x-0 opacity-0 group-hover:opacity-100 transition-all">
-              <MdModeEdit
-                className="cursor-pointer hover:text-blue-500 transition-colors duration-300"
-                size={18}
-              />
-              <MdDelete
-                className="cursor-pointer hover:text-red-500 transition-colors duration-300"
-                size={18}
-              />
-            </span>
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   );

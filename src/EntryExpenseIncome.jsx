@@ -1,4 +1,84 @@
-const EntryExpenseIncome = () => {
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+
+const EntryExpenseIncome = ({
+  onAddIncomeOrExpense,
+  isIncome,
+  onHandleIsIncome,
+  editIncome,
+  isEdit,
+}) => {
+  const [income, setIncome] = useState({
+    id: crypto.randomUUID(),
+    category: "",
+    amount: "",
+    date: "",
+  });
+
+  // If isEdit is true then render the form with value to be edited
+  useEffect(() => {
+    if (isEdit) {
+      setIncome(editIncome);
+    }
+  }, [isEdit, editIncome]);
+
+  const [expense, setExpense] = useState({
+    id: crypto.randomUUID(),
+    category: "",
+    amount: "",
+    date: "",
+  });
+
+  
+
+  function handleChange(e) {
+    const name = e.target.name;
+    const value = e.target.value;
+
+    if (isIncome) {
+      setIncome({
+        ...income,
+        [name]: value,
+      });
+    } else {
+      setExpense({
+        ...expense,
+        [name]: value,
+      });
+    }
+  }
+
+  function handleFormValue(e) {
+    e.preventDefault();
+
+    if (isIncome) {
+      onAddIncomeOrExpense(income);
+      // toast.success("Income Added!");
+      // Reset the form and generate a new ID
+      setIncome({
+        id: crypto.randomUUID(),
+        category: "",
+        amount: "",
+        date: "",
+      });
+    } else {
+      onAddIncomeOrExpense(expense);
+      toast.success("Expense Added!");
+      // Reset the form and generate a new ID
+      setExpense({
+        id: crypto.randomUUID(),
+        category: "",
+        amount: "",
+        date: "",
+      });
+    }
+  }
+
+  // console.log(isIncome, "edit income:", editIncome);
+  // console.log("Income: ", income);
+  // console.log("isEdit: ", isEdit);
+  // console.log("editIncome: ", editIncome);
+
   return (
     <div>
       <h1 className="text-3xl text-center font-semibold text-gray-800 dark:text-white lg:text-4xl">
@@ -6,32 +86,70 @@ const EntryExpenseIncome = () => {
       </h1>
 
       <div className="my-4">
-        <button className="bg-blue-500 hover:bg-blue-400 text-gray-800 font-bold dark:text-gray-200 rounded-l-lg btn-sm w-1/2">
+        <button
+          onClick={() => onHandleIsIncome(true)}
+          className={`text-gray-800 font-bold rounded-l-lg btn-sm w-1/2 ${
+            isIncome
+              ? "bg-blue-500 hover:bg-blue-400 dark:text-gray-200 transition-all duration-300"
+              : "bg-white hover:bg-white dark:text-gray-800 transition-all duration-300"
+          }`}
+        >
           Income
         </button>
-        <button className="bg-white hover:bg-white text-gray-800 dark:text-gray-800 font-bold rounded-r-lg btn-sm w-1/2">
+        <button
+          onClick={() => onHandleIsIncome(false)}
+          className={`text-gray-800  font-bold rounded-r-lg btn-sm w-1/2 ${
+            isIncome
+              ? "bg-white hover:bg-white dark:text-gray-800 transition-all duration-300"
+              : " bg-blue-500 hover:bg-blue-400 dark:text-gray-200 transition-all duration-300"
+          }`}
+        >
           Expense
         </button>
       </div>
 
       <div>
-        <form className="space-y-4">
+        <form onSubmit={handleFormValue} className="space-y-4">
           <div className="relative">
             <label className="block text-base text-gray-800 dark:text-gray-200">
               Category
             </label>
-            <select className="appearance-none block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-lg dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40">
-              <option value="Education">Education</option>
-              <option value="Food">Food</option>
-              <option value="Health">Health</option>
-              <option value="Bill">Bill</option>
-              <option value="Insurance">Insurance</option>
-              <option value="Tax">Tax</option>
-              <option value="Transport">Transport</option>
-              <option value="Telephone">Telephone</option>
-            </select>
 
-            <div className="absolute top-10 right-0 flex items-center pr-3 pointer-events-none">
+            {isIncome ? (
+              <select
+                className="appearance-none block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-lg dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                name="category"
+                value={income.category}
+                onChange={handleChange}
+                required
+              >
+                <option value=" ">Select Category</option>
+                <option value="Salary">Salary</option>
+                <option value="Outsourcing">Outsourcing</option>
+                <option value="Bond">Bond</option>
+                <option value="Dividend">Dividend</option>
+              </select>
+            ) : (
+              <select
+                className="appearance-none block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-lg dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                name="category"
+                value={expense.category}
+                onChange={handleChange}
+                required
+              >
+                <option value=" ">Select Category</option>
+                <option value="Education">Education</option>
+                <option value="Food">Food</option>
+                <option value="Health">Health</option>
+                <option value="Bill">Bill</option>
+                <option value="Insurance">Insurance</option>
+                <option value="Tax">Tax</option>
+                <option value="Transport">Transport</option>
+                <option value="Telephone">Telephone</option>
+              </select>
+            )}
+
+            <div className="absolute top-11 right-0 flex items-center pr-3 pointer-events-none">
               <svg
                 className="w-5 h-5 text-white"
                 xmlns="http://www.w3.org/2000/svg"
@@ -59,6 +177,10 @@ const EntryExpenseIncome = () => {
               className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-lg dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
               placeholder="123456"
               id="amount"
+              name="amount"
+              value={isIncome ? income.amount : expense.amount}
+              onChange={handleChange}
+              required
             />
           </div>
 
@@ -73,10 +195,17 @@ const EntryExpenseIncome = () => {
               type="date"
               className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-lg dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
               id="date"
+              name="date"
+              value={isIncome ? income.date : expense.date}
+              onChange={handleChange}
+              required
             />
           </div>
 
-          <button className="w-full px-4 py-2 text-base font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-500 rounded-lg hover:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50">
+          <button
+            type="submit"
+            className="w-full px-4 py-2 text-base font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-500 rounded-lg hover:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50"
+          >
             Save
           </button>
         </form>
