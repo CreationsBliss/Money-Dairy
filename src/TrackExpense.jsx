@@ -7,7 +7,7 @@ import {
   MdOutlineSettingsInputComponent,
 } from "react-icons/md";
 
-const TrackExpense = ({ expenses }) => {
+const TrackExpense = ({ expenses, onHandleEditExpense, onDeleteExpense }) => {
   return (
     <div>
       <div className="flex justify-between items-center bg-gray-800 p-4 rounded-md">
@@ -51,10 +51,12 @@ const TrackExpense = ({ expenses }) => {
                 <MdModeEdit
                   className="cursor-pointer hover:text-blue-500 transition-colors duration-300"
                   size={18}
+                  onClick={() => onHandleEditExpense(expense)}
                 />
                 <MdDelete
                   className="cursor-pointer hover:text-red-500 transition-colors duration-300"
                   size={18}
+                  onClick={() => onDeleteExpense(expense)}
                 />
               </span>
             </div>

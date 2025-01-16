@@ -22,10 +22,11 @@ function App() {
 
   const [incomes, setIncomes] = useState([initialIncome]);
   const [expenses, setExpenses] = useState([initialExpense]);
-
   const [isIncome, setIsIncome] = useState(true);
   const [isEdit, setIsEdit] = useState(false);
+  const [isExpenseEdit, setIsExpenseEdit] = useState(false);
   const [editIncome, setEditIncome] = useState(null);
+  const [editExpense, setEditExpense] = useState(null);
 
   // Add income or expense through Income entry form
   function handleIncomeOrExpense(newIncomeOrExpense) {
@@ -46,18 +47,66 @@ function App() {
         toast.success("Income Updated!");
       }
     } else {
-      setExpenses([...expenses, newIncomeOrExpense]);
+      if (!isExpenseEdit) {
+        setExpenses([...expenses, newIncomeOrExpense]);
+        toast.success("Expense Added!");
+      } else {
+        setExpenses(
+          expenses.map((expense) => {
+            if (expense.id === newIncomeOrExpense.id) {
+              return newIncomeOrExpense;
+            }
+            return expense;
+          })
+        );
+        // setIsEdit(false);
+        setIsExpenseEdit(false);
+        toast.success("Expense Updated!");
+      }
     }
   }
 
   //Handle edit Income
-  function handleEditIncome(valueToBeEdited) {
-    setIsIncome(true)
+  function handleEditIncome(incomeToBeEdited) {
+    setIsIncome(true);
     setIsEdit(true);
-    setEditIncome(valueToBeEdited);
+    setEditIncome(incomeToBeEdited);
   }
 
-  // console.log(isIncome);
+  //Handle delete Income
+  function handleDeleteIncome(incomeToBeDeleted) {
+    const newIcomes = incomes.filter(
+      (income) => income.id !== incomeToBeDeleted.id
+    );
+    setIncomes(newIcomes);
+  }
+
+  //Handle edit Expense
+  function handleEditExpense(expenseToBeEdited) {
+    setIsIncome(false);
+    setIsExpenseEdit(true);
+    setEditExpense(expenseToBeEdited);
+  }
+
+  //Handle delete Expense
+  function handleDeleteExpense(expenseToBeDeleted) {
+    const newExpenses = expenses.filter(
+      (expense) => expense.id !== expenseToBeDeleted.id
+    );
+    setExpenses(newExpenses);
+  }
+
+  // Sort Income by Ascending order
+  function handleSortAscendingIncome() {
+    const sorted = [...incomes].sort((a, b) => a.amount - b.amount);
+    setIncomes(sorted);
+  }
+
+  // Sort Income by Descending order
+  const handleSortDescendingIncome = () => {
+    const sorted = [...incomes].sort((a, b) => b.amount - a.amount); 
+    setIncomes(sorted);
+  };
 
   return (
     <div className="font-chakra max-w-[1290px] mx-auto flex flex-col items-start px-0 md:px-5 md:flex-row gap-10 py-0 md:py-10">
@@ -68,6 +117,8 @@ function App() {
           isIncome={isIncome}
           editIncome={editIncome}
           isEdit={isEdit}
+          editExpense={editExpense}
+          isExpenseEdit={isExpenseEdit}
         ></EntryExpenseIncome>
       </div>
 
@@ -82,10 +133,17 @@ function App() {
             <TrackIncome
               incomes={incomes}
               onEditIncome={handleEditIncome}
+              onDeleteIncome={handleDeleteIncome}
+              onHandleSortAscendingIncome={handleSortAscendingIncome}
+              onHandleSortDescendingIncome={handleSortDescendingIncome}
             ></TrackIncome>
           </div>
           <div className="flex-1 w-full md:w-1/2 border rounded-md dark:border-gray-600">
-            <TrackExpense expenses={expenses}></TrackExpense>
+            <TrackExpense
+              expenses={expenses}
+              onHandleEditExpense={handleEditExpense}
+              onDeleteExpense={handleDeleteExpense}
+            ></TrackExpense>
           </div>
         </div>
       </div>

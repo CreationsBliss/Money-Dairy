@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
 
 const EntryExpenseIncome = ({
   onAddIncomeOrExpense,
@@ -7,6 +6,8 @@ const EntryExpenseIncome = ({
   onHandleIsIncome,
   editIncome,
   isEdit,
+  editExpense,
+  isExpenseEdit,
 }) => {
   const [income, setIncome] = useState({
     id: crypto.randomUUID(),
@@ -29,7 +30,12 @@ const EntryExpenseIncome = ({
     date: "",
   });
 
-  
+  // If isEdit is true then render the form with value to be edited
+  useEffect(() => {
+    if (isExpenseEdit) {
+      setExpense(editExpense);
+    }
+  }, [isExpenseEdit, editExpense]);
 
   function handleChange(e) {
     const name = e.target.name;
@@ -63,7 +69,7 @@ const EntryExpenseIncome = ({
       });
     } else {
       onAddIncomeOrExpense(expense);
-      toast.success("Expense Added!");
+      // toast.success("Expense Added!");
       // Reset the form and generate a new ID
       setExpense({
         id: crypto.randomUUID(),
