@@ -2,16 +2,17 @@ import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import CalculateIncomeExpenseBalance from "./CalculateIncomeExpenseBalance";
 import EntryExpenseIncome from "./EntryExpenseIncome";
+import { getIncome, saveIncome } from "./Storage";
 import TrackExpense from "./TrackExpense";
 import TrackIncome from "./TrackIncome";
 
 function App() {
-  const initialIncome = {
-    id: crypto.randomUUID(),
-    category: "Salary",
-    amount: 10000,
-    date: "2025-01-23",
-  };
+  // const initialIncome = {
+  //   id: crypto.randomUUID(),
+  //   category: "Salary",
+  //   amount: 10000,
+  //   date: "2025-01-23",
+  // };
 
   const initialExpense = {
     id: crypto.randomUUID(),
@@ -20,7 +21,7 @@ function App() {
     date: "2025-02-15",
   };
 
-  const [incomes, setIncomes] = useState([initialIncome]);
+  const [incomes, setIncomes] = useState(getIncome());
   const [expenses, setExpenses] = useState([initialExpense]);
   const [isIncome, setIsIncome] = useState(true);
   const [isEdit, setIsEdit] = useState(false);
@@ -37,6 +38,8 @@ function App() {
       if (!isEdit) {
         setIncomes([...incomes, newIncomeOrExpense]);
         toast.success("Income Added!");
+        // Save Income to Local Storage
+        saveIncome([...incomes, newIncomeOrExpense]);
       } else {
         setIncomes(
           incomes.map((income) => {
@@ -48,6 +51,15 @@ function App() {
         );
         setIsEdit(false);
         toast.success("Income Updated!");
+        // Save Income to Local Storage after Update
+        saveIncome(
+          incomes.map((income) => {
+            if (income.id === newIncomeOrExpense.id) {
+              return newIncomeOrExpense;
+            }
+            return income;
+          })
+        );
       }
     } else {
       if (!isExpenseEdit) {
@@ -82,6 +94,8 @@ function App() {
       (income) => income.id !== incomeToBeDeleted.id
     );
     setIncomes(newIcomes);
+    // Save Incomes to Local Storage after deletion
+    saveIncome(incomes.filter((income) => income.id !== incomeToBeDeleted.id));
   }
 
   //Handle edit Expense
