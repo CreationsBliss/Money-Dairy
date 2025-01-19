@@ -9,14 +9,16 @@ import {
 } from "react-icons/md";
 
 const TrackIncome = ({
-  incomes,
+  filteredIncomes,
   onEditIncome,
   onDeleteIncome,
   onHandleSortAscendingIncome,
   onHandleSortDescendingIncome,
+  onHandleFilterByCheckboxChange,
 }) => {
   const [isOpen1, setIsOpen1] = useState(false);
   const [isOpen2, setIsOpen2] = useState(false);
+  const [checkboxValues, setCheckboxValues] = useState([]);
 
   const dropdownRef1 = useRef(null);
   const dropdownRef2 = useRef(null);
@@ -44,6 +46,35 @@ const TrackIncome = ({
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  function handleCheckboxChange(e) {
+    const isChecked = e.target.checked;
+    const checkboxValue = e.target.value;
+
+    let updatedValues;
+    if (isChecked) {
+      updatedValues = [...checkboxValues, checkboxValue];
+    } else {
+      updatedValues = checkboxValues.filter((Value) => Value !== checkboxValue);
+    }
+    setCheckboxValues(updatedValues);
+    onHandleFilterByCheckboxChange(updatedValues);
+  }
+
+  // function handleCheckboxChange(e) {
+  //   const isChecked = e.target.checked;
+  //   const checkboxValue = e.target.value;
+
+  //   if (isChecked) {
+  //     setCheckboxValues((prev) => [...prev, checkboxValue]);
+  //   } else {
+  //     setCheckboxValues((prev) =>
+  //       prev.filter((Value) => Value !== checkboxValue)
+  //     );
+  //   }
+
+  //   console.log(checkboxValues);
+  // }
 
   return (
     <div>
@@ -96,6 +127,8 @@ const TrackIncome = ({
                       <input
                         type="checkbox"
                         className="form-checkbox w-4 h-4 text-gray-100 rounded-md border-gray-300 focus:ring-offset-2 checked:bg-gray-800"
+                        value="Salary"
+                        onChange={handleCheckboxChange}
                       />
                       <span className="ml-2">Salary</span>
                     </label>
@@ -103,6 +136,8 @@ const TrackIncome = ({
                       <input
                         type="checkbox"
                         className="form-checkbox w-4 h-4 text-gray-100 rounded-md border-gray-300 focus:ring-offset-2 checked:bg-gray-800"
+                        value="Outsourcing"
+                        onChange={handleCheckboxChange}
                       />
                       <span className="ml-2">Outsourcing</span>
                     </label>
@@ -110,6 +145,8 @@ const TrackIncome = ({
                       <input
                         type="checkbox"
                         className="form-checkbox w-4 h-4 text-gray-100 rounded-md border-gray-300 focus:ring-offset-2 checked:bg-gray-800"
+                        value="Bond"
+                        onChange={handleCheckboxChange}
                       />
                       <span className="ml-2">Bond</span>
                     </label>
@@ -117,6 +154,8 @@ const TrackIncome = ({
                       <input
                         type="checkbox"
                         className="form-checkbox w-4 h-4 text-gray-100 rounded-md border-gray-300 focus:ring-offset-2 checked:bg-gray-800"
+                        value="Dividend"
+                        onChange={handleCheckboxChange}
                       />
                       <span className="ml-2">Dividend</span>
                     </label>
@@ -129,7 +168,7 @@ const TrackIncome = ({
       </div>
 
       <div className="py-4">
-        {incomes.map((income) => (
+        {filteredIncomes.map((income) => (
           <div
             key={income.id}
             className="flex justify-between items-center mx-4 pb-2 pt-2 border-b last:border-b-0 dark:border-gray-600 group"
