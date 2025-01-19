@@ -22,4 +22,6 @@ Money Dairy is a user-friendly financial tracking application designed to simpli
 - React Icons
 - Local Storage API
 
+Live Demo: [https://money-diary.netlify.app](https://money-diary.netlify.app)
+
 
