@@ -19,7 +19,7 @@ const CalculateIncomeExpenseBalance = ({ incomes, expenses }) => {
       <div className="w-full md:w-1/3 p-4 text-white text-center border-l border-t border-b border-r md:border-r-0 rounded-l-md rounded-r-md md:rounded-r-none dark:border-gray-600">
         <h1
           className={`text-3xl font-semibold lg:text-4xl ${
-            totalBalance > 0
+            totalBalance > 0 || totalBalance === 0
               ? "text-gray-800 dark:text-white"
               : "text-red-700 dark:text-red-700"
           }`}

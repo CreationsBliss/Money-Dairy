@@ -59,8 +59,6 @@ const EntryExpenseIncome = ({
 
     if (isIncome) {
       onAddIncomeOrExpense(income);
-      // toast.success("Income Added!");
-      // Reset the form and generate a new ID
       setIncome({
         id: crypto.randomUUID(),
         category: "",
@@ -69,8 +67,6 @@ const EntryExpenseIncome = ({
       });
     } else {
       onAddIncomeOrExpense(expense);
-      // toast.success("Expense Added!");
-      // Reset the form and generate a new ID
       setExpense({
         id: crypto.randomUUID(),
         category: "",
@@ -79,11 +75,6 @@ const EntryExpenseIncome = ({
       });
     }
   }
-
-  // console.log(isIncome, "edit income:", editIncome);
-  // console.log("Income: ", income);
-  // console.log("isEdit: ", isEdit);
-  // console.log("editIncome: ", editIncome);
 
   return (
     <div>
@@ -117,12 +108,16 @@ const EntryExpenseIncome = ({
       <div>
         <form onSubmit={handleFormValue} className="space-y-4">
           <div className="relative">
-            <label className="block text-base text-gray-800 dark:text-gray-200">
+            <label
+              htmlFor="category"
+              className="block text-base text-gray-800 dark:text-gray-200"
+            >
               Category
             </label>
 
             {isIncome ? (
               <select
+                id="category"
                 className="appearance-none block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-lg dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                 name="category"
                 value={income.category}
@@ -137,6 +132,7 @@ const EntryExpenseIncome = ({
               </select>
             ) : (
               <select
+                id="category"
                 className="appearance-none block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-lg dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                 name="category"
                 value={expense.category}
@@ -144,14 +140,14 @@ const EntryExpenseIncome = ({
                 required
               >
                 <option value=" ">Select Category</option>
-                <option value="Education">Education</option>
                 <option value="Food">Food</option>
+                <option value="Education">Education</option>
                 <option value="Health">Health</option>
                 <option value="Bill">Bill</option>
-                <option value="Insurance">Insurance</option>
-                <option value="Tax">Tax</option>
                 <option value="Transport">Transport</option>
                 <option value="Telephone">Telephone</option>
+                <option value="Tax">Tax</option>
+                <option value="Insurance">Insurance</option>
               </select>
             )}
 

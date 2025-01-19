@@ -1,4 +1,5 @@
 import moment from "moment";
+import { useEffect, useRef, useState } from "react";
 import { BiSortAlt2 } from "react-icons/bi";
 import { FaMoneyBillAlt } from "react-icons/fa";
 import {
@@ -7,7 +8,59 @@ import {
   MdOutlineSettingsInputComponent,
 } from "react-icons/md";
 
-const TrackExpense = ({ expenses, onHandleEditExpense, onDeleteExpense }) => {
+const TrackExpense = ({
+  filteredExpenses,
+  onHandleEditExpense,
+  onDeleteExpense,
+  onHandleSortAscendingExpense,
+  onHandleSortDescendingExpense,
+  onHandleFilterByCheckboxChange,
+}) => {
+  const [isOpen1, setIsOpen1] = useState(false);
+  const [isOpen2, setIsOpen2] = useState(false);
+  const [checkboxValues, setCheckboxValues] = useState([]);
+
+  const dropdownRef1 = useRef(null);
+  const dropdownRef2 = useRef(null);
+
+  const toggleDropdown1 = () => {
+    setIsOpen1(!isOpen1);
+  };
+
+  const toggleDropdown2 = () => {
+    setIsOpen2(!isOpen2);
+  };
+
+  const handleClickOutside = (event) => {
+    if (dropdownRef1.current && !dropdownRef1.current.contains(event.target)) {
+      setIsOpen1(false);
+    }
+    if (dropdownRef2.current && !dropdownRef2.current.contains(event.target)) {
+      setIsOpen2(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  function handleCheckboxChange(e) {
+    const isChecked = e.target.checked;
+    const checkboxValue = e.target.value;
+
+    let updatedValues;
+    if (isChecked) {
+      updatedValues = [...checkboxValues, checkboxValue];
+    } else {
+      updatedValues = checkboxValues.filter((value) => value !== checkboxValue);
+    }
+    setCheckboxValues(updatedValues);
+    onHandleFilterByCheckboxChange(updatedValues);
+  }
+
   return (
     <div>
       <div className="flex justify-between items-center bg-gray-800 p-4 rounded-md">
@@ -21,16 +74,129 @@ const TrackExpense = ({ expenses, onHandleEditExpense, onDeleteExpense }) => {
         </div>
         <div className="flex space-x-1">
           <div className="bg-white p-1 flex justify-center items-center cursor-pointer border rounded-md dark:border-gray-600 hover:bg-gray-300">
-            <BiSortAlt2 color="black" size={18} />
+            <div className="relative inline-block" ref={dropdownRef1}>
+              <BiSortAlt2 color="black" size={18} onClick={toggleDropdown1} />
+
+              {isOpen1 && (
+                <div className="absolute right-0 md:left-0 mt-2 w-32 sm:w-40 bg-[#1D232A] border dark:border-gray-600 rounded-lg shadow-lg z-10 transform transition-all duration-300 ease-in-out">
+                  <ul className="py-2">
+                    <li
+                      className="px-4 py-1 hover:bg-gray-800 cursor-pointer"
+                      onClick={onHandleSortAscendingExpense}
+                    >
+                      Low to High
+                    </li>
+                    <li
+                      className="px-4 py-1 hover:bg-gray-800 cursor-pointer"
+                      onClick={onHandleSortDescendingExpense}
+                    >
+                      High to Low
+                    </li>
+                  </ul>
+                </div>
+              )}
+            </div>
           </div>
           <div className="bg-white p-1 flex justify-center items-center cursor-pointer border rounded-md dark:border-gray-600 hover:bg-gray-300">
-            <MdOutlineSettingsInputComponent color="black" size={18} />
+            <div className="relative inline-block" ref={dropdownRef2}>
+              <MdOutlineSettingsInputComponent
+                color="black"
+                size={18}
+                onClick={toggleDropdown2}
+              />
+
+              {isOpen2 && (
+                <div className="absolute right-0 mt-2 w-56 sm:w-72 bg-[#1D232A] border dark:border-gray-600 rounded-lg shadow-lg z-10 transform transition-all duration-300 ease-in-out">
+                  <form className="py-2 grid grid-cols-1 sm:grid-cols-2 gap-4 px-4">
+                    <label className="flex items-center">
+                      <input
+                        type="checkbox"
+                        className="form-checkbox w-4 h-4 text-gray-100 rounded-md border-gray-300 focus:ring-offset-2 checked:bg-gray-800"
+                        value="Food"
+                        onChange={handleCheckboxChange}
+                      />
+                      <span className="ml-2">Food</span>
+                    </label>
+
+                    <label className="flex items-center">
+                      <input
+                        type="checkbox"
+                        className="form-checkbox w-4 h-4 text-gray-100 rounded-md border-gray-300 focus:ring-offset-2 checked:bg-gray-800"
+                        value="Education"
+                        onChange={handleCheckboxChange}
+                      />
+                      <span className="ml-2">Education</span>
+                    </label>
+
+                    <label className="flex items-center">
+                      <input
+                        type="checkbox"
+                        className="form-checkbox w-4 h-4 text-gray-100 rounded-md border-gray-300 focus:ring-offset-2 checked:bg-gray-800"
+                        value="Health"
+                        onChange={handleCheckboxChange}
+                      />
+                      <span className="ml-2">Health</span>
+                    </label>
+
+                    <label className="flex items-center">
+                      <input
+                        type="checkbox"
+                        className="form-checkbox w-4 h-4 text-gray-100 rounded-md border-gray-300 focus:ring-offset-2 checked:bg-gray-800"
+                        value="Bill"
+                        onChange={handleCheckboxChange}
+                      />
+                      <span className="ml-2">Bill</span>
+                    </label>
+
+                    <label className="flex items-center">
+                      <input
+                        type="checkbox"
+                        className="form-checkbox w-4 h-4 text-gray-100 rounded-md border-gray-300 focus:ring-offset-2 checked:bg-gray-800"
+                        value="Transport"
+                        onChange={handleCheckboxChange}
+                      />
+                      <span className="ml-2">Transport</span>
+                    </label>
+
+                    <label className="flex items-center">
+                      <input
+                        type="checkbox"
+                        className="form-checkbox w-4 h-4 text-gray-100 rounded-md border-gray-300 focus:ring-offset-2 checked:bg-gray-800"
+                        value="Telephone"
+                        onChange={handleCheckboxChange}
+                      />
+                      <span className="ml-2">Telephone</span>
+                    </label>
+
+                    <label className="flex items-center">
+                      <input
+                        type="checkbox"
+                        className="form-checkbox w-4 h-4 text-gray-100 rounded-md border-gray-300 focus:ring-offset-2 checked:bg-gray-800"
+                        value="Tax"
+                        onChange={handleCheckboxChange}
+                      />
+                      <span className="ml-2">Tax</span>
+                    </label>
+
+                    <label className="flex items-center">
+                      <input
+                        type="checkbox"
+                        className="form-checkbox w-4 h-4 text-gray-100 rounded-md border-gray-300 focus:ring-offset-2 checked:bg-gray-800"
+                        value="Insurance"
+                        onChange={handleCheckboxChange}
+                      />
+                      <span className="ml-2">Insurance</span>
+                    </label>
+                  </form>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
 
       <div className="py-4">
-        {expenses.map((expense) => (
+        {filteredExpenses.map((expense) => (
           <div
             key={expense.id}
             className="flex justify-between items-center mx-4 pb-2 pt-2 border-b last:border-b-0 dark:border-gray-600 group"

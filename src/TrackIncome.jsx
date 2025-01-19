@@ -55,26 +55,11 @@ const TrackIncome = ({
     if (isChecked) {
       updatedValues = [...checkboxValues, checkboxValue];
     } else {
-      updatedValues = checkboxValues.filter((Value) => Value !== checkboxValue);
+      updatedValues = checkboxValues.filter((value) => value !== checkboxValue);
     }
     setCheckboxValues(updatedValues);
     onHandleFilterByCheckboxChange(updatedValues);
   }
-
-  // function handleCheckboxChange(e) {
-  //   const isChecked = e.target.checked;
-  //   const checkboxValue = e.target.value;
-
-  //   if (isChecked) {
-  //     setCheckboxValues((prev) => [...prev, checkboxValue]);
-  //   } else {
-  //     setCheckboxValues((prev) =>
-  //       prev.filter((Value) => Value !== checkboxValue)
-  //     );
-  //   }
-
-  //   console.log(checkboxValues);
-  // }
 
   return (
     <div>
