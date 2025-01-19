@@ -11,6 +11,7 @@ Money Dairy is a user-friendly financial tracking application designed to simpli
 - __Real-Time Notifications__: Get instant feedback and alerts using React Toast.
 - __Iconic Interface__: Enjoy a visually appealing design with the use of React Icons.
 - __Responsive Design__: Built with Tailwind CSS for optimal performance across devices.
+- __Local Storage Integration__: Save your income and expense data locally on your device, ensuring your financial records are accessible even after refreshing the page or reopening the app.
 
 ## Technologies Used:
 
@@ -19,5 +20,6 @@ Money Dairy is a user-friendly financial tracking application designed to simpli
 - Meraki UI
 - React Hot Toast
 - React Icons
+- Local Storage API
 
 
